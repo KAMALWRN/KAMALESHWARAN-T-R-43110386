@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Navbar</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: "Montserrat", sans-serif;
+            background-color: white;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+        }
+        .navbar {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+            background-color: lightsalmon; 
+            border: 1px solid #444; 
+            padding: 10px;
+        }
+        .nav-brand {
+            height: 80%;
+            padding: 10px 10px;
+            display: flex;
+            flex-direction: row;
+            justify-content: start;
+            align-items: center;
+        }
+        .nav-info {
+            height: 80%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .nav-info > a {
+            padding: 5px 10px;
+            margin: 3px;
+            text-decoration: none;
+            color: white; 
+        }
+        .nav-info > a:hover {
+            background-color: #575757; 
+            border-radius: 5px;
+        }
+        .nav-signup {
+            height: 80%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            align-items: center;
+        }
+        .nav-signup > img, .nav-signup > button {
+            margin: 10px;
+        }
+        .nav-signup > img {
+            width: 20px; 
+            height: 20px; 
+        }
+        .btn-signup {
+            background-color: transparent;
+            padding: 5px 15px;
+            border: 1px solid white;
+            border-radius: 10px;
+            color: white; 
+        }
+        .btn-signup:hover {
+            background-color: white;
+            color: #333;
+        }
+        .poster {
+            width: 100%;
+            height: 400px;
+            margin: 40px 0px;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+        }
+        .poster img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .poster-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .poster-content h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .poster-content p {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .poster-content button {
+            background-color: white;
+            color: black;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .poster-content button:hover {
+            background-color: #ddd;
+        }
+        .explore-menu {
+            text-align: left;
+            margin: 50px 20px;
+        }
+        .menu-grid {
+            display: flex;
+            justify-content: flex-start;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .menu-item {
+            text-align: center;
+        }
+        .menu-item img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+        .menu-item img:hover {
+            transform: scale(1.1);
+        }
+        .menu-item p {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <p>TASTY BUDS</p>
+        </div>
+        <div class="nav-info">
+            <a href="/">Home</a>
+            <a href="/">Menu</a>
+            <a href="/">Contact us</a>
+        </div>
+        <div class="nav-signup">
+            <img src="shopping-cart.png" alt="Cart"/>
+            <button class="btn-signup">Sign up</button>
+        </div>
+    </nav>
+    
+    <div class="poster">
+        <img src="main.png" alt="Background"/>
+        <div class="poster-content">
+            <h1>Order Your Favorite Food Here</h1>
+            <p>Choose from a diverse menu featuring a delectable array of dishes crafted with the finest ingredients and culinary expertise.</p>
+            <button onclick="scrollToMenu()">View Menu</button>
+        </div>
+    </div>
+    
+    <section class="explore-menu" id="menu-section">
+        <h2>Explore Our Menu</h2>
+        <p>Discover a variety of delicious dishes crafted with fresh ingredients. Whether you're in the mood for a light salad, a sweet treat, a hearty sandwich, or a full-course meal, we have something for everyone.</p>
+        <div class="menu-grid">
+            <div class="menu-item"><a href="salads.html"><img src="salads.jpg" alt="Salads"></a><p>Salads</p></div>
+            <div class="menu-item"><a href="desserts.html"><img src="desert.jpg" alt="Desserts"></a><p>Desserts</p></div>
+            <div class="menu-item"><a href="sandwich.html"><img src="sandwich.jpg" alt="Sandwich"></a><p>Sandwiches</p></div>
+            <div class="menu-item"><a href="maincourse.html"><img src="main course.jpg" alt="Main Course"></a><p>Main course</p></div>
+            <div class="menu-item"><a href="Biriyani.html"><img src="Biriyani.png" alt="Main Course"></a><p>Biriyani </p></div>
+            <div class="menu-item"><a href="Dosa.html"><img src="Dosa.png" alt="Main Course"></a><p>Dosas</p></div>
+            <div class="menu-item"><a href="Bevreages"><img src="bev.jpg" alt="Main Course"></a><p>Bevreages</p></div>
+            <div class="menu-item"><a href="Icecreams"><img src="ice.jpg" alt="Main Course"></a><p>Icecreams</p></div>
+
+        </div>
+    </section>
+
+    <script>
+        function scrollToMenu() {
+            document.getElementById("menu-section").scrollIntoView({ behavior: "smooth" });
+        }
+    </script>
+</body>
+</html>

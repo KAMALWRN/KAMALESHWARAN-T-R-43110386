@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salads Menu</title>
+    <style>
+        body {
+            font-family: "Montserrat", sans-serif;
+            text-align: center;
+        }
+        .menu-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .menu-item {
+            border: 1px solid lightsalmon;
+            border-radius: 10px;
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            background-color: palegoldenrod;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.1);
+        }
+        .menu-item img {
+            width: 100%;
+            height: 150px;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+        .menu-item p {
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .price {
+            font-size: 18px;
+            color: green;
+            font-weight: bold;
+        }
+        .quantity {
+            width: 50px;
+            padding: 5px;
+            text-align: center;
+            font-size: 16px;
+        }
+        .add-to-cart {
+            background-color: lightsalmon;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .add-to-cart:hover {
+            background-color: darksalmon;
+        }
+        /* Cart Section */
+        .cart {
+            margin-top: 30px;
+            padding: 20px;
+            border-top: 2px solid #ddd;
+        }
+        .cart-items {
+            list-style: none;
+            padding: 0;
+        }
+        .cart-items li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+            border-bottom: 1px solid #ddd;
+            padding: 10px;
+        }
+        .cart-total {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+        .remove-item {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .remove-item:hover {
+            background-color: darkred;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Salads Menu</h1>
+    <p>Choose from the best salads</p>
+    <div class="menu-container">
+        <div class="menu-item">
+            <img src="avocado.jpg" alt="Caesar Salad">
+            <p>Avocado Salad</p>
+            <p class="price">Rs. 180</p>
+            <input type="number" class="quantity" min="1" value="1">
+            <button class="add-to-cart" data-name="Caesar Salad" data-price="7.99">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="greek.jpg" alt="Greek Salad">
+            <p>Greek Salad</p>
+            <p class="price">Rs. 190</p>
+            <input type="number" class="quantity" min="1" value="1">
+            <button class="add-to-cart" data-name="Greek Salad" data-price="6.99">Add to Cart</button>
+        </div>
+        <div class="menu-item">
+            <img src="mixed.jpg" alt="Garden Salad">
+            <p>Mixed Salad</p>
+            <p class="price">Rs. 210</p>
+            <input type="number" class="quantity" min="1" value="1">
+            <button class="add-to-cart" data-name="Garden Salad" data-price="5.99">Add to Cart</button>
+        </div>
+    </div>
+
+  
+
+</body>
+</html>
