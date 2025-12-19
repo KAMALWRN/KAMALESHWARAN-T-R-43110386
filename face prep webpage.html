@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FACE Prep - Food & Education</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #d9534f; 
+        }
+
+        .nav-toggle {
+            display: none; 
+            cursor: pointer;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 5px 0;
+        }
+
+        .content {
+            width: 90%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 0;
+            box-sizing: border-box;
+        }
+
+        .food-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .food-image img {
+            max-width: 100%;
+            border-radius: 50%; 
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .text-content {
+            flex: 1;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .discount {
+            background-color: #5cb85c; 
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .text-content h1 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .text-content p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .explore-button {
+            background-color: #f0ad4e;
+            color: white;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+
+            .food-image {
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+
+            .nav-toggle {
+                display: block; 
+            }
+
+            nav {
+                display: none; 
+                width: 100%;
+                text-align: center;
+            }
+
+            nav ul {
+                list-style: none;
+                padding: 0;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            nav ul li a {
+                text-decoration: none;
+                color: #333;
+                font-size: 18px;
+            }
+
+            .nav-open nav {
+                display: block; 
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">FACE Prep</div>
+        <div class="nav-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Courses</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="content">
+        <div class="food-image">
+            <img src="delicious.png" alt="Delicious Food">
+        </div>
+        <div class="text-content">
+            <div class="discount">50% Off on All Products</div>
+            <h1>Enjoy Your Delicious Food</h1>
+            <p>Embrace a new era of Computer Science education at FACE Prep Campus, where we redefine degrees for the modern world. Follow us on social media for up-to-date Career Guidance, Scholarships, Expert Interviews, Program Insights, and help shape the next generation of computer science leaders.</p>
+            <button class="explore-button">Explore Now</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('navToggle').addEventListener('click', function() {
+            document.body.classList.toggle('nav-open');
+        });
+    </script>
+</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FACE Prep</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #f0f0f0; 
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .header-menu {
+            display: flex;
+            gap: 20px;
+        }
+
+        .header-menu a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .card-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            width: 300px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .card img {
+            max-width: 100px;
+            margin-bottom: 20px;
+        }
+
+        .card h3 {
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .menu-button {
+            background-color: #4CAF50; 
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            margin-bottom: 40px;
+        }
+
+        .explore-menu {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            background-color: #f0f0f0; 
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        
+        @media (max-width: 768px) {
+            .card-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .card {
+                width: 80%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-logo">FACE Prep</div>
+        <nav class="header-menu">
+            <a href="#">Menu</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <div class="card-container">
+            <div class="card">
+                <img src="discount.png" alt="Discount Voucher">
+                <h3>Discount Voucher</h3>
+                <p>Embrace a new era of Computer Science education at FACE Prep Campus, where we redefine degrees for the modern world. Follow us on social media for up-to-date Career Guidance, Scholarships, Expert Interviews, Program Insights, and help shape the next generation of computer science leaders.</p>
+            </div>
+            <div class="card">
+                <img src="fresh.png" alt="Fresh Healthy Food">
+                <h3>Fresh Healthy Food</h3>
+                <p>Embrace a new era of Computer Science education at FACE Prep Campus, where we redefine degrees for the modern world. Follow us on social media for up-to-date Career Guidance, Scholarships, Expert Interviews, Program Insights, and help shape the next generation of computer science leaders.</p>
+            </div>
+            <div class="card">
+                <img src="delivery.png" alt="Fast Home Delivery">
+                <h3>Fast Home Delivery</h3>
+                <p>Embrace a new era of Computer Science education at FACE Prep Campus, where we redefine degrees for the modern world. Follow us on social media for up-to-date Career Guidance, Scholarships, Expert Interviews, Program Insights, and help shape the next generation of computer science leaders.</p>
+            </div>
+        </div>
+
+        <button class="menu-button">Our Menu</button>
+
+        <div class="explore-menu">Explore Our Menu</div>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 FACE Prep. All rights reserved.</p>
+    </footer>
+</body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FACE Prep</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px; 
+        }
+
+        header {
+            background-color: #f0f0f0;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .hero {
+            display: flex;
+            justify-content: center; 
+            align-items: center; 
+            height: 400px; 
+            overflow: hidden;
+            position: relative;
+        }
+
+        .hero img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .footer {
+            background-color: #f0f0f0;
+            padding: 20px 0;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+
+        .footer-section {
+            flex: 1;
+            margin: 10px;
+        }
+
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 5px;
+        }
+
+        .footer-section ul li a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        .footer-section form {
+            display: flex; 
+        }
+
+        .footer-section form input[type="email"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            width: 200px;
+            margin-right: 10px; 
+        }
+
+        .footer-section form button {
+            padding: 8px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .social-icons {
+            display: flex;
+        }
+
+        .social-icons a {
+            margin-right: 10px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .bottom-bar {
+            background-color: #f0f0f0;
+            padding: 10px 0;
+            text-align: right;
+            font-size: 12px;
+        }
+
+        .bottom-bar-content {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .bottom-bar-content span {
+            margin-left: 20px;
+        }
+
+        .bottom-bar-content img {
+            width: 20px;
+            height: 20px;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo">FACE Prep</div>
+            <nav>
+                <ul>
+                    <li><a href="#">Main Links</a></li>
+                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Support</a></li> 
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <img src="main.png" alt="Hero Image"> 
+    </section>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Our foods make your taste buds happier</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">order tracking</a></li>
+                    <li><a href="#">new order</a></li>
+                    <li><a href="#">contact us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact Us</h3>
+                <ul>
+                    <li>Email: faceprep@gmail.com</li>
+                    <li>Phone: 1234567890</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <form>
+                    <input type="email" placeholder="Enter your email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+    </footer>
+
+    <div class="bottom-bar">
+        <div class="container bottom-bar-content">
+            <span>&copy; 2023 FACE Prep</span>
+            
+        </div>
+        
+          </div>
+          
+          <script src="https://kit.fontawesome.com/YOUR_FONT_AWESOME_KIT_ID.js" crossorigin="anonymous"></script>
+          
+    </div>
+</body>
+
+  
+</html>
+</html>
+</html>

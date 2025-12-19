@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Employee List</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <h1>Employee List</h1>
+
+    <form id="addEmployeeForm">
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required />
+        </div>
+        <div class="form-group">
+            <label for="age">Age:</label>
+            <input type="number" id="age" min="18" max="100" required />
+        </div>
+        <div class="form-group">
+            <label for="position">Position:</label>
+            <input type="text" id="position" required />
+        </div>
+        <button type="submit">Add Employee</button>
+    </form>
+
+    <table id="employeeList">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+                <th>Position</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- New employee rows will be appended here -->
+        </tbody>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+</html>
