@@ -46,14 +46,6 @@ out/
 .vscode/
 *.code-workspace
 
-# NetBeans
-nbproject/private/
-build/
-nbbuild/
-dist/
-nbdist/
-.nb-gradle/
-
 # Spring Boot
 application-local.properties
 application-dev.properties
@@ -82,20 +74,6 @@ desktop.ini
 *~
 ~$*
 
-# Word Documents - Keep template but exclude if too large
-# Uncomment to exclude Word docs:
-# *.doc
-# *.docx
-# *.dot
-# *.dotx
-
-# Large image files - Screenshots are usually OK, but exclude if too large
-# Uncomment if images are too large:
-# *.jpg
-# *.jpeg
-# *.png
-# !Website Images/*.png
-
 # Node modules (if you add any frontend build tools)
 node_modules/
 npm-debug.log
@@ -111,3 +89,44 @@ application-secret.properties
 
 # Exclude actual application.properties (contains sensitive data)
 travel-tours-system/src/main/resources/application.properties
+
+# ============================================
+# EXCLUDE ALL OTHER FOLDERS AND FILES
+# Only keep: travel-tours-system/, Website Images/, CAPSTONE_PROJECT_REPORT.docx, Website_video_Drive_Link.txt
+# ============================================
+
+# Exclude all date folders
+18.08.2025/
+19.11.25/
+21.08.2025/
+21.11.2025/
+22.08.2025/
+23.08.2025/
+25-11-2025/
+25.8.2025/
+26.08.2025/
+28.08.2025/
+28.11.2025/
+4.12.2025/
+5.3.25/
+6.12.2025/
+
+# Exclude other folders
+Eshop website/
+webpage/
+project 1-3.3.25/
+
+# Exclude other files
+face prep webpage.html
+student.html
+to do list.html
+Screenshot 2025-11-19 160003.png
+25.08.2025.sql
+
+# Exclude guide files (optional - remove these lines if you want to keep them)
+ADD_TO_EXISTING_REPO.md
+FIX_FOLDER_STRUCTURE.md
+UPLOAD_EVERYTHING.md
+
+# Exclude README.md (optional - remove this line if you want to keep README.md)
+# README.md
