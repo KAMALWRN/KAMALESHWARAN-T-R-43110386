@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tour Packages - Kamal Tours and Travels</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-plane"></i> Kamal Tours & Travels
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="packages.html">Packages</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Packages Section -->
+    <div class="container mt-5 pt-4">
+        <h2 class="text-center mb-4">Tour Packages</h2>
+        
+        <!-- Category Filter -->
+        <div class="mb-4">
+            <label class="form-label">Filter by Category:</label>
+            <select class="form-select" id="categoryFilter">
+                <option value="">All Categories</option>
+            </select>
+        </div>
+        
+        <!-- Packages Grid -->
+        <div class="row" id="packagesContainer">
+            <div class="col-12 text-center">
+                <div class="spinner-border text-primary"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        let allPackages = [];
+        
+        document.addEventListener('DOMContentLoaded', async function() {
+            await loadCategories();
+            await loadPackages();
+            
+            document.getElementById('categoryFilter').addEventListener('change', function() {
+                filterPackages(this.value);
+            });
+        });
+        
+        async function loadCategories() {
+            const response = await categoriesAPI.getAll();
+            const select = document.getElementById('categoryFilter');
+            
+            if (response && response.ok) {
+                response.data.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    select.appendChild(option);
+                });
+            }
+        }
+        
+        async function loadPackages() {
+            const container = document.getElementById('packagesContainer');
+            const response = await packagesAPI.getAll();
+            
+            if (response && response.ok) {
+                allPackages = response.data;
+                displayPackages(allPackages);
+            } else {
+                container.innerHTML = '<div class="col-12 text-center text-danger">Failed to load packages</div>';
+            }
+        }
+        
+        function filterPackages(categoryId) {
+            if (!categoryId) {
+                displayPackages(allPackages);
+                return;
+            }
+            
+            const filtered = allPackages.filter(pkg => pkg.categoryId == categoryId);
+            displayPackages(filtered);
+        }
+        
+        function displayPackages(packages) {
+            const container = document.getElementById('packagesContainer');
+            
+            if (packages.length === 0) {
+                container.innerHTML = '<div class="col-12 text-center text-muted">No packages found</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            packages.forEach(pkg => {
+                const col = document.createElement('div');
+                col.className = 'col-md-4 col-sm-6 mb-4';
+                const price = pkg.discountPrice && pkg.discountPrice > 0 ? pkg.discountPrice : pkg.price;
+                const originalPrice = pkg.discountPrice && pkg.discountPrice > 0 ? pkg.price : null;
+                
+                col.innerHTML = `
+                    <div class="card package-card h-100">
+                        <img src="${pkg.mainImageUrl || 'https://via.placeholder.com/400'}" class="card-img-top" alt="${pkg.title}">
+                        <div class="card-body">
+                            <h5 class="card-title">${pkg.title}</h5>
+                            <p class="card-text text-muted">
+                                <i class="fas fa-map-marker-alt"></i> ${pkg.destination || 'N/A'}<br>
+                                <i class="fas fa-calendar"></i> ${pkg.duration} days<br>
+                                <i class="fas fa-users"></i>${pkg.availableSeats} seats available
+                            </p>
+                            <div class="mb-3">
+                                ${originalPrice ? `<span class="package-discount">${formatCurrency(originalPrice)}</span> ` : ''}
+                                <span class="package-price">${formatCurrency(price)}</span>
+                            </div>
+                            <a href="package-details.html?id=${pkg.id}" class="btn btn-primary w-100">View Details</a>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        }
+    </script>
+	<footer class="bg-dark text-white py-3"> <div class="container text-center"> <p>&copy; 2024 Travel Tours. All rights reserved.</p> </div> </footer>
+</body>
+</html>
+

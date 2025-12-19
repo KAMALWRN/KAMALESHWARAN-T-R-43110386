@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Travel Tours</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-plane"></i> Travel Tours - Admin
+            </a>
+            <div class="navbar-nav ms-auto">
+                <a class="nav-link" href="index.html">Back to Home</a>
+                <a class="nav-link" href="#" id="logoutBtn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Admin Dashboard -->
+    <div class="container mt-5 pt-4">
+        <h2 class="mb-4"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</h2>
+        
+        <!-- Tabs -->
+        <ul class="nav nav-tabs mb-4" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="bookings-tab" data-bs-toggle="tab" data-bs-target="#bookings">
+                    <i class="fas fa-calendar-check"></i> Bookings
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="payments-tab" data-bs-toggle="tab" data-bs-target="#payments">
+                    <i class="fas fa-credit-card"></i> Payments
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="enquiries-tab" data-bs-toggle="tab" data-bs-target="#enquiries">
+                    <i class="fas fa-envelope"></i> Enquiries
+                </button>
+            </li>
+        </ul>
+        
+        <!-- Tab Content -->
+        <div class="tab-content" id="adminTabContent">
+            <!-- Bookings Tab -->
+            <div class="tab-pane fade show active" id="bookings" role="tabpanel">
+                <div class="table-container">
+                    <h4>All Bookings</h4>
+                    <div id="bookingsTable">
+                        <div class="text-center">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Payments Tab -->
+            <div class="tab-pane fade" id="payments" role="tabpanel">
+                <div class="table-container">
+                    <h4>Payment History</h4>
+                    <div id="paymentsTable">
+                        <div class="text-center">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Enquiries Tab -->
+            <div class="tab-pane fade" id="enquiries" role="tabpanel">
+                <div class="table-container">
+                    <h4>All Enquiries</h4>
+                    <div id="enquiriesTable">
+                        <div class="text-center">
+                            <div class="spinner-border text-primary"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if admin
+            if (!isAuthenticated() || !isAdmin()) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            loadBookings();
+            loadPayments();
+            loadEnquiries();
+            setupLogout();
+            
+            // Tab switching
+            document.querySelectorAll('[data-bs-toggle="tab"]').forEach(tab => {
+                tab.addEventListener('shown.bs.tab', function(e) {
+                    if (e.target.id === 'bookings-tab') {
+                        loadBookings();
+                    } else if (e.target.id === 'payments-tab') {
+                        loadPayments();
+                    } else if (e.target.id === 'enquiries-tab') {
+                        loadEnquiries();
+                    }
+                });
+            });
+        });
+        
+        async function loadBookings() {
+            const response = await bookingsAPI.getAll();
+            const container = document.getElementById('bookingsTable');
+            
+            if (response && response.ok) {
+                const bookings = response.data;
+                
+                if (bookings.length === 0) {
+                    container.innerHTML = '<p class="text-muted">No bookings found</p>';
+                    return;
+                }
+                
+                let html = `
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Booking #</th>
+                                <th>User</th>
+                                <th>Package</th>
+                                <th>Travelers</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                bookings.forEach(booking => {
+                    html += `
+                        <tr>
+                            <td>${booking.bookingNumber}</td>
+                            <td>${booking.userName}</td>
+                            <td>${booking.tourPackageTitle}</td>
+                            <td>${booking.numberOfTravelers}</td>
+                            <td>${formatCurrency(booking.totalAmount)}</td>
+                            <td><span class="badge status-${booking.status.toLowerCase()}">${booking.status}</span></td>
+                            <td>${formatDate(booking.bookingDate)}</td>
+                            <td>
+                                <select class="form-select form-select-sm" onchange="updateBookingStatus(${booking.id}, this.value)">
+                                    <option value="PENDING" ${booking.status === 'PENDING' ? 'selected' : ''}>Pending</option>
+                                    <option value="CONFIRMED" ${booking.status === 'CONFIRMED' ? 'selected' : ''}>Confirmed</option>
+                                    <option value="CANCELLED" ${booking.status === 'CANCELLED' ? 'selected' : ''}>Cancelled</option>
+                                    <option value="COMPLETED" ${booking.status === 'COMPLETED' ? 'selected' : ''}>Completed</option>
+                                </select>
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = '<div class="alert alert-danger">Failed to load bookings</div>';
+            }
+        }
+        
+        async function loadPayments() {
+            const response = await paymentsAPI.getAll();
+            const container = document.getElementById('paymentsTable');
+            
+            if (response && response.ok) {
+                const payments = response.data;
+                
+                if (payments.length === 0) {
+                    container.innerHTML = '<p class="text-muted">No payments found</p>';
+                    return;
+                }
+                
+                let html = `
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Payment ID</th>
+                                <th>Booking #</th>
+                                <th>User</th>
+                                <th>Package</th>
+                                <th>Amount</th>
+                                <th>Payment Method</th>
+                                <th>Transaction ID</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                payments.forEach(payment => {
+                    const statusClass = payment.status === 'COMPLETED' ? 'bg-success' : 
+                                      payment.status === 'PENDING' ? 'bg-warning' : 
+                                      payment.status === 'FAILED' ? 'bg-danger' : 'bg-secondary';
+                    
+                    html += `
+                        <tr>
+                            <td><code>${payment.paymentId}</code></td>
+                            <td>${payment.bookingNumber}</td>
+                            <td>${payment.userName}</td>
+                            <td>${payment.tourPackageTitle}</td>
+                            <td><strong>${formatCurrency(payment.amount)}</strong></td>
+                            <td>${payment.paymentMethod || 'N/A'}</td>
+                            <td><code>${payment.transactionId || 'N/A'}</code></td>
+                            <td><span class="badge ${statusClass}">${payment.status}</span></td>
+                            <td>${formatDate(payment.paymentDate)}</td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = '<div class="alert alert-danger">Failed to load payments</div>';
+            }
+        }
+        
+        async function loadEnquiries() {
+            const response = await enquiriesAPI.getAll();
+            const container = document.getElementById('enquiriesTable');
+            
+            if (response && response.ok) {
+                const enquiries = response.data;
+                
+                if (enquiries.length === 0) {
+                    container.innerHTML = '<p class="text-muted">No enquiries found</p>';
+                    return;
+                }
+                
+                let html = `
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Package</th>
+                                <th>Message</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                `;
+                
+                enquiries.forEach(enquiry => {
+                    html += `
+                        <tr class="${!enquiry.isRead ? 'table-warning' : ''}">
+                            <td>${enquiry.name}</td>
+                            <td>${enquiry.email}</td>
+                            <td>${enquiry.phone}</td>
+                            <td>${enquiry.tourPackageTitle || 'N/A'}</td>
+                            <td>${enquiry.message || ''}</td>
+                            <td>${formatDate(enquiry.createdAt)}</td>
+                            <td>${enquiry.isRead ? '<span class="badge bg-success">Read</span>' : '<span class="badge bg-warning">Unread</span>'}</td>
+                            <td>
+                                ${!enquiry.isRead ? `<button class="btn btn-sm btn-primary" onclick="markEnquiryAsRead(${enquiry.id})">Mark as Read</button>` : ''}
+                            </td>
+                        </tr>
+                    `;
+                });
+                
+                html += '</tbody></table>';
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = '<div class="alert alert-danger">Failed to load enquiries</div>';
+            }
+        }
+        
+        async function updateBookingStatus(bookingId, status) {
+            const response = await bookingsAPI.updateStatus(bookingId, status);
+            
+            if (response && response.ok) {
+                showAlert('Booking status updated successfully', 'success');
+                loadBookings();
+            } else {
+                showAlert('Failed to update booking status', 'danger');
+            }
+        }
+        
+        async function markEnquiryAsRead(enquiryId) {
+            const response = await enquiriesAPI.markAsRead(enquiryId);
+            
+            if (response && response.ok) {
+                showAlert('Enquiry marked as read', 'success');
+                loadEnquiries();
+            } else {
+                showAlert('Failed to mark enquiry as read', 'danger');
+            }
+        }
+        
+        function setupLogout() {
+            document.getElementById('logoutBtn').addEventListener('click', function() {
+                removeToken();
+                window.location.href = 'index.html';
+            });
+        }
+    </script>
+</body>
+</html>
+

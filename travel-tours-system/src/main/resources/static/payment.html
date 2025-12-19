@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - Travel Tours</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-plane"></i> Kamal tours & Travels
+            </a>
+        </div>
+    </nav>
+
+    <!-- Payment Section -->
+    <div class="container mt-5 pt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0"><i class="fas fa-credit-card"></i> Payment</h4>
+                    </div>
+                    <div class="card-body">
+                        <div id="paymentInfo" class="mb-4">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary"></div>
+                            </div>
+                        </div>
+                        
+                        <form id="paymentForm">
+                            <input type="hidden" id="paymentId">
+                            <input type="hidden" id="bookingId">
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Payment Method</label>
+                                <select class="form-select" id="paymentMethod" required>
+                                    <option value="">Select Payment Method</option>
+                                    <option value="CARD">Credit/Debit Card</option>
+                                    <option value="PAYPAL">UPI/Gpay/PhonePay</option>
+                                    <option value="BANK_TRANSFER">Bank Transfer</option>
+                                </select>
+                            </div>
+                            
+                            <div class="card-details" id="cardDetails" style="display: none;">
+                                <div class="mb-3">
+                                    <label class="form-label">Card Number</label>
+                                    <input type="text" class="form-control" id="cardNumber" 
+                                           placeholder="1234 5678 9012 3456" maxlength="19">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Expiry Date</label>
+                                        <input type="text" class="form-control" id="expiryDate" 
+                                               placeholder="MM/YY" maxlength="5">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">CVV</label>
+                                        <input type="text" class="form-control" id="cvv" 
+                                               placeholder="123" maxlength="3">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Cardholder Name</label>
+                                    <input type="text" class="form-control" id="cardholderName" 
+                                           placeholder="John Doe">
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info">
+                                <i class="fas fa-info-circle"></i> This is a demo payment page. All payments will be processed successfully.
+                            </div>
+                            
+                            <div id="paymentMessage"></div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg" id="payButton">
+                                    <i class="fas fa-lock"></i> Pay Now
+                                </button>
+                                <a href="packages.html" class="btn btn-outline-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // Get booking ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const bookingId = urlParams.get('bookingId');
+        
+        if (!bookingId) {
+            document.getElementById('paymentInfo').innerHTML = 
+                '<div class="alert alert-danger">Invalid booking. Please try again.</div>';
+        }
+        
+        // Load payment information
+        async function loadPaymentInfo() {
+            try {
+                const response = await paymentsAPI.create(bookingId);
+                if (response && response.ok) {
+                    const payment = response.data;
+                    document.getElementById('paymentId').value = payment.paymentId;
+                    document.getElementById('bookingId').value = payment.bookingId;
+                    
+                    document.getElementById('paymentInfo').innerHTML = `
+                        <div class="border-bottom pb-3 mb-3">
+                            <h5>Booking Summary</h5>
+                            <p class="mb-1"><strong>Booking Number:</strong> ${payment.bookingNumber}</p>
+                            <p class="mb-1"><strong>Package:</strong> ${payment.tourPackageTitle}</p>
+                            <p class="mb-0"><strong>Amount:</strong> <span class="text-primary fs-4">$${payment.amount.toFixed(2)}</span></p>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('paymentInfo').innerHTML = 
+                        '<div class="alert alert-danger">Failed to load payment information.</div>';
+                }
+            } catch (error) {
+                console.error('Error loading payment:', error);
+                document.getElementById('paymentInfo').innerHTML = 
+                    '<div class="alert alert-danger">Error loading payment information.</div>';
+            }
+        }
+        
+        // Show/hide card details based on payment method
+        document.getElementById('paymentMethod').addEventListener('change', function() {
+            const cardDetails = document.getElementById('cardDetails');
+            if (this.value === 'CARD') {
+                cardDetails.style.display = 'block';
+            } else {
+                cardDetails.style.display = 'none';
+            }
+        });
+        
+        // Format card number
+        document.getElementById('cardNumber').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\s/g, '');
+            let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+            e.target.value = formattedValue;
+        });
+        
+        // Format expiry date
+        document.getElementById('expiryDate').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            }
+            e.target.value = value;
+        });
+        
+        // Only allow numbers for CVV
+        document.getElementById('cvv').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/\D/g, '');
+        });
+        
+        // Handle payment form submission
+        document.getElementById('paymentForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const paymentId = document.getElementById('paymentId').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const payButton = document.getElementById('payButton');
+            const messageDiv = document.getElementById('paymentMessage');
+            
+            if (!paymentMethod) {
+                messageDiv.innerHTML = '<div class="alert alert-warning">Please select a payment method.</div>';
+                return;
+            }
+            
+            payButton.disabled = true;
+            payButton.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Processing...';
+            messageDiv.innerHTML = '';
+            
+            try {
+                const response = await paymentsAPI.process(paymentId, paymentMethod);
+                
+                if (response && response.ok) {
+                    // Redirect to success page
+                    window.location.href = `payment-success.html?paymentId=${paymentId}`;
+                } else {
+                    const errorMsg = response?.data?.message || 'Payment failed. Please try again.';
+                    messageDiv.innerHTML = `<div class="alert alert-danger">${errorMsg}</div>`;
+                    payButton.disabled = false;
+                    payButton.innerHTML = '<i class="fas fa-lock"></i> Pay Now';
+                }
+            } catch (error) {
+                console.error('Payment error:', error);
+                messageDiv.innerHTML = '<div class="alert alert-danger">An error occurred. Please try again.</div>';
+                payButton.disabled = false;
+                payButton.innerHTML = '<i class="fas fa-lock"></i> Pay Now';
+            }
+        });
+        
+        // Load payment info on page load
+        if (bookingId) {
+            loadPaymentInfo();
+        }
+    </script>
+</body>
+</html>
+

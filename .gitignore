@@ -1,0 +1,113 @@
+# Compiled class files
+*.class
+
+# Log files
+*.log
+
+# Package Files
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Eclipse
+.classpath
+.project
+.settings/
+bin/
+.metadata
+*.launch
+*.pydevproject
+.cproject
+
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# NetBeans
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# Spring Boot
+application-local.properties
+application-dev.properties
+*.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# Temporary files
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+~$*
+
+# Word Documents - Keep template but exclude if too large
+# Uncomment to exclude Word docs:
+# *.doc
+# *.docx
+# *.dot
+# *.dotx
+
+# Large image files - Screenshots are usually OK, but exclude if too large
+# Uncomment if images are too large:
+# *.jpg
+# *.jpeg
+# *.png
+# !Website Images/*.png
+
+# Node modules (if you add any frontend build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Application specific
+application-secret.properties
+
+# Exclude actual application.properties (contains sensitive data)
+travel-tours-system/src/main/resources/application.properties

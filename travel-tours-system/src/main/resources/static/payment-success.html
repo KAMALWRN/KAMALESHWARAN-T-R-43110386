@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Success - Travel Tours</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            background: #28a745;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            font-size: 50px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <i class="fas fa-plane"></i> Travel Tours
+            </a>
+        </div>
+    </nav>
+
+    <!-- Success Section -->
+    <div class="container mt-5 pt-4">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow text-center">
+                    <div class="card-body p-5">
+                        <div class="success-icon">
+                            <i class="fas fa-check"></i>
+                        </div>
+                        <h2 class="text-success mb-3">Payment Successful!</h2>
+                        <p class="lead mb-4">Your booking has been confirmed.</p>
+                        
+                        <div id="paymentDetails" class="text-start mb-4">
+                            <div class="text-center">
+                                <div class="spinner-border text-primary"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            <a href="index.html" class="btn btn-primary btn-lg">
+                                <i class="fas fa-home"></i> Go to Home
+                            </a>
+                            <a href="packages.html" class="btn btn-outline-primary btn-lg">
+                                <i class="fas fa-umbrella-beach"></i> Browse More Packages
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script>
+        // Get payment ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const paymentId = urlParams.get('paymentId');
+        
+        // Load payment details
+        async function loadPaymentDetails() {
+            if (!paymentId) {
+                document.getElementById('paymentDetails').innerHTML = 
+                    '<div class="alert alert-warning">Payment ID not found.</div>';
+                return;
+            }
+            
+            try {
+                const response = await paymentsAPI.getByPaymentId(paymentId);
+                if (response && response.ok) {
+                    const payment = response.data;
+                    document.getElementById('paymentDetails').innerHTML = `
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Payment Details</h5>
+                                <div class="row mb-2">
+                                    <div class="col-6"><strong>Booking Number:</strong></div>
+                                    <div class="col-6">${payment.bookingNumber}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6"><strong>Package:</strong></div>
+                                    <div class="col-6">${payment.tourPackageTitle}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6"><strong>Amount Paid:</strong></div>
+                                    <div class="col-6 text-success fw-bold">$${payment.amount.toFixed(2)}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6"><strong>Payment Method:</strong></div>
+                                    <div class="col-6">${payment.paymentMethod}</div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col-6"><strong>Transaction ID:</strong></div>
+                                    <div class="col-6"><code>${payment.transactionId}</code></div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6"><strong>Payment Date:</strong></div>
+                                    <div class="col-6">${new Date(payment.paymentDate).toLocaleString()}</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    document.getElementById('paymentDetails').innerHTML = 
+                        '<div class="alert alert-warning">Could not load payment details.</div>';
+                }
+            } catch (error) {
+                console.error('Error loading payment:', error);
+                document.getElementById('paymentDetails').innerHTML = 
+                    '<div class="alert alert-warning">Error loading payment details.</div>';
+            }
+        }
+        
+        // Load payment details on page load
+        loadPaymentDetails();
+    </script>
+</body>
+</html>
+
